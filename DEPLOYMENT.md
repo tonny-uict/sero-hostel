@@ -1,26 +1,63 @@
 # Deploy SERO HOSTEL & RENTAL
 
-## 1. Upload to GitHub
+Two hosts, one codebase:
 
-1. Download and extract this ZIP.
-2. Create a new GitHub repository, for example `sero-hostel-rental`.
-3. Upload the **contents** of this extracted folder to the repository root. Make sure `index.html` is directly at the top level.
-4. Commit the files to the `main` branch.
-5. Open the repository's **Settings -> Pages**.
-6. Under **Build and deployment**, select **Deploy from a branch**.
-7. Choose branch `main` and folder `/ (root)`, then save.
-8. GitHub will provide the Pages website address after deployment.
+| Host | Address |
+| --- | --- |
+| GitHub Pages | https://tonny-uict.github.io/sero-hostel/ |
+| Vercel | https://sero-hostel.vercel.app |
 
-## 2. Deploy the same repository to Vercel
+The site uses only relative paths, so it works both at a domain root (Vercel)
+and under a subfolder (GitHub Pages project site). `.nojekyll` is already
+present, so GitHub Pages serves the `fonts/` and `images/` folders as-is.
 
-1. Sign in to Vercel using your GitHub account.
-2. Select **Add New -> Project** and import the `sero-hostel-rental` repository.
-3. Choose **Other** as the framework preset.
-4. Leave the build command blank; use `.` as the output directory if Vercel requests one.
-5. Deploy. Vercel will assign a `*.vercel.app` address.
-6. Future commits pushed to GitHub can trigger automatic Vercel deployments.
+## 0. One-time setup on this machine
 
-GitHub Pages and Vercel are separate hosting destinations. Importing the GitHub repository into Vercel is what creates the Vercel deployment and its `.vercel.app` address.
+```bash
+gh auth login          # sign in as tonny-uict
+vercel login           # sign in with the same GitHub account
+```
+
+## 1. GitHub repository + Pages
+
+The repository is already committed locally on branch `main`.
+
+```bash
+gh repo create tonny-uict/sero-hostel --public --source=. --remote=origin --push
+gh api -X POST repos/tonny-uict/sero-hostel/pages \
+  -f 'source[branch]=main' -f 'source[path]=/'
+```
+
+- The repository must be **public** for Pages on a free account.
+- Pages URL: `https://tonny-uict.github.io/sero-hostel/`
+- First build takes a minute or two. Check with:
+  `gh api repos/tonny-uict/sero-hostel/pages --jq .status`
+
+To ship later changes:
+
+```bash
+git add -A && git commit -m "Update" && git push
+```
+
+GitHub Pages redeploys automatically on every push to `main`.
+
+## 2. Vercel
+
+`vercel.json` already sets `cleanUrls`, `trailingSlash: false` and long-lived
+cache headers for `images/` and `fonts/`.
+
+```bash
+vercel link --project sero-hostel
+vercel --prod
+```
+
+- `vercel link --project sero-hostel` fixes the project name, which is what
+  produces `sero-hostel.vercel.app`. Deploying without it would name the
+  project after the folder (`sero-hostel-website-v2`).
+- The `.vercel.app` name is only free if no other account owns it. If Vercel
+  says it is taken, pick `sero-hostel-ug` or add a custom domain.
+- For automatic deploys on push, import the GitHub repo in the Vercel
+  dashboard instead: **Add New -> Project -> sero-hostel**.
 
 ## Before launch
 

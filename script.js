@@ -59,15 +59,15 @@
       title: 'Double room', text: 'Two beds in one room.',
       feats: ['Two wooden beds', 'Tiled floor', 'Hooks along the wall'],
       cta: 'Ask about a double room', plan: 'double',
-      imgs: [{ base: 'room-double-v2', big: 1600, w: 1600, h: 900, alt: 'A double room with two wooden beds and a tiled floor' }]
+      imgs: [{ base: 'room-double-v3', big: 1600, w: 1600, h: 900, alt: 'A double room with two wooden beds and a tiled floor' }]
     },
     bath: {
       title: 'Bathrooms', text: 'Tiled and bright, with running water.',
       feats: ['Tiled walls and floor', 'Window for daylight', 'Tap and towel rail'],
       cta: 'Plan your stay', plan: 'unsure',
       imgs: [
-        { base: 'bath-a-v2', big: 1312, w: 1312, h: 1199, alt: 'Tiled bathroom with a squat toilet, tap and barred window' },
-        { base: 'bath-b-v2', big: 1199, w: 1199, h: 1312, alt: 'Second tiled bathroom with a squat toilet, tap and towel rail' }
+        { base: 'bath-a-v3', big: 1199, w: 1199, h: 1312, alt: 'Tiled bathroom with a squat toilet, tap and barred window' },
+        { base: 'bath-b-v3', big: 1199, w: 1199, h: 1312, alt: 'Second tiled bathroom with a squat toilet, tap and towel rail' }
       ]
     }
   };

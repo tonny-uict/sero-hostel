@@ -219,34 +219,3 @@
 
   $('#year').textContent = new Date().getFullYear();
 })();
-
-/* Hero slideshow */
-(() => {
-  const slides = [...document.querySelectorAll('.slide')];
-  const dotsBox = document.getElementById('slideDots');
-  const label = document.getElementById('slideLabel');
-  const hero = document.getElementById('hero');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let i = 0, timer;
-
-  const go = n => {
-    i = (n + slides.length) % slides.length;
-    slides.forEach((s, k) => s.classList.toggle('is-on', k === i));
-    [...dotsBox.children].forEach((d, k) => d.classList.toggle('is-on', k === i));
-    label.textContent = slides[i].dataset.label;
-  };
-  const start = () => { if (!reduce) timer = setInterval(() => go(i + 1), 6000); };
-  const restart = () => { clearInterval(timer); start(); };
-
-  slides.forEach((s, n) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Show ' + s.dataset.label);
-    b.addEventListener('click', () => { go(n); restart(); });
-    dotsBox.append(b);
-  });
-  hero.addEventListener('mouseenter', () => clearInterval(timer));
-  hero.addEventListener('mouseleave', restart);
-  go(0);
-  start();
-})();

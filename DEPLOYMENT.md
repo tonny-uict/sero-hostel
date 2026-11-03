@@ -11,12 +11,16 @@ The site uses only relative paths, so it works both at a domain root (Vercel)
 and under a subfolder (GitHub Pages project site). `.nojekyll` is already
 present, so GitHub Pages serves the `fonts/` and `images/` folders as-is.
 
-## 0. One-time setup on this machine
+## 0. Status
 
-```bash
-gh auth login          # sign in as tonny-uict
-vercel login           # sign in with the same GitHub account
-```
+Both hosts are live and deploy on every push to `main`:
+
+- GitHub Pages rebuilds from the `main` branch automatically.
+- Vercel deploys through `.github/workflows/deploy.yml` (GitHub Actions).
+  The `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` repository
+  secrets are already set. The token is project-scoped to `sero-hostel`.
+
+No manual step is needed after `git push`.
 
 ## 1. GitHub repository + Pages
 
@@ -43,21 +47,29 @@ GitHub Pages redeploys automatically on every push to `main`.
 
 ## 2. Vercel
 
-`vercel.json` already sets `cleanUrls`, `trailingSlash: false` and long-lived
-cache headers for `images/` and `fonts/`.
+`vercel.json` sets `cleanUrls`, `trailingSlash: false` and long-lived cache
+headers for `images/` and `fonts/`.
+
+Deployment is automatic: pushing to `main` runs
+`.github/workflows/deploy.yml`, which deploys production and moves the
+`sero-hostel.vercel.app` alias. Check it with:
 
 ```bash
-vercel link --project sero-hostel
+gh run list --workflow=deploy.yml
+```
+
+Manual deploy, if ever needed:
+
+```bash
 vercel --prod
 ```
 
-- `vercel link --project sero-hostel` fixes the project name, which is what
-  produces `sero-hostel.vercel.app`. Deploying without it would name the
-  project after the folder (`sero-hostel-website-v2`).
-- The `.vercel.app` name is only free if no other account owns it. If Vercel
-  says it is taken, pick `sero-hostel-ug` or add a custom domain.
-- For automatic deploys on push, import the GitHub repo in the Vercel
-  dashboard instead: **Add New -> Project -> sero-hostel**.
+- `sero-hostel.vercel.app` is produced by the project name `sero-hostel`.
+- To rename the project, use `vercel link --project <new-name>` and update the
+  `VERCEL_PROJECT_ID` secret.
+- The token in `VERCEL_TOKEN` is project-scoped. If it is rotated in the Vercel
+  dashboard, update the secret:
+  `gh secret set VERCEL_TOKEN -R tonny-uict/sero-hostel`
 
 ## Before launch
 

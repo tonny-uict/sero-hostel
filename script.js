@@ -4,7 +4,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---- Settings you may want to change ---- */
-  const WHATSAPP_NUMBER = '256750995450';          // number the WhatsApp buttons open
+  const WHATSAPP_NUMBER = '256785862735';          // number the WhatsApp buttons open
   const MAP_DEFAULT = 'Banda, Kampala, Uganda';    // replace with the exact address or "lat,lng" once confirmed
   /* ----------------------------------------- */
 
